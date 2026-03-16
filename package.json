@@ -1,10 +1,38 @@
 {
+  "name": "postwp",
+  "version": "0.1.0",
+  "description": "High performance classic WordPress theme based on Bootstrap framework and PostBoot library.",
+  "type": "module",
+  "main": "index.js",
+  "author": "Tarkhov",
+  "license": "MIT",
   "scripts": {
+    "build": "webpack",
+    "build-css": "webpack --env css",
+    "build-js": "webpack --env js",
     "crit-dev": "NODE_ENV=development node critical.js",
     "crit-prod": "NODE_ENV=production node critical.js"
   },
   "devDependencies": {
+    "@babel/preset-env": "^7.29.0",
+    "babel-loader": "^10.1.1",
     "critical": "^7.2.1",
-    "dotenv": "^17.3.1"
+    "css-loader": "^7.1.4",
+    "dotenv": "^17.3.1",
+    "dotenv-webpack": "^9.0.0",
+    "mini-css-extract-plugin": "^2.10.1",
+    "purgecss": "^8.0.0",
+    "sass": "^1.98.0",
+    "sass-loader": "^16.0.7",
+    "webpack": "^5.105.4",
+    "webpack-cli": "^7.0.0"
+  },
+  "dependencies": {
+    "@fancyapps/ui": "^6.1.13",
+    "@googlemaps/js-api-loader": "^2.0.2",
+    "bootstrap": "^5.3.8",
+    "highlight.js": "^11.11.1",
+    "inputmask": "^5.0.9",
+    "intl-tel-input": "^26.8.1"
   }
 }

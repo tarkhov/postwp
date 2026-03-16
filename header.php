@@ -9,8 +9,6 @@
         <link rel="icon" href="<?php echo $site_url; ?>/icon.svg" type="image/svg+xml">
         <link rel="apple-touch-icon" href="<?php echo $site_url; ?>/icon.png">
         <link rel="manifest" href="<?php echo $site_url; ?>/site.webmanifest">
-        <link rel="profile" href="http://gmpg.org/xfn/11">
-        <link rel="preconnect" href="<?php echo $_ENV['API_URL']; ?>">
         <?php wp_head(); ?>
     </head>
     <body <?php body_class(); ?>>
@@ -20,26 +18,26 @@
                     <div class="container-xxl">
                         <?php $site_name = get_option('blogname'); ?>
                         <a class="navbar-brand" href="<?php echo esc_url(home_url('/')); ?>" rel="home">
-                            <?php echo fast_icon('logo', [40, 40]); ?>
+                            <?php echo postwp_icon('logo', [40, 40]); ?>
                             <span class="ms-2"><?php echo $site_name; ?></span>
                         </a>
-                        <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvas-navbar" aria-controls="offcanvas-navbar" aria-label="<?php _e('Toggle navigation', 'fast-html'); ?>">
+                        <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvas-navbar" aria-controls="offcanvas-navbar" aria-label="<?php _e('Toggle navigation', 'postwp'); ?>">
                             <span class="navbar-toggler-icon"></span>
                         </button>
-                        <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvas-navbar" aria-labelledby="offcanvas-navbar-label">
+                        <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvas-navbar-top" aria-labelledby="offcanvas-navbar-top-label">
                             <div class="offcanvas-header">
-                                <div class="h5 offcanvas-title fw-normal" id="offcanvasNavbarLabel">
-                                    <?php echo fast_icon('logo', [40, 40]); ?>
+                                <div class="h5 offcanvas-title fw-normal" id="offcanvas-navbar-top-label">
+                                    <?php echo postwp_icon('logo', [40, 40]); ?>
                                     <span class="ms-2"><?php echo $site_name; ?></span>
                                 </div>
-                                <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="<?php _e('Close', 'fast-html'); ?>"></button>
+                                <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="<?php _e('Close', 'postwp'); ?>"></button>
                             </div>
                             <div class="offcanvas-body">
                                 <?php
                                 wp_nav_menu([
                                     'theme_location' => 'top',
                                     'container'      => false,
-                                    'menu_class'     => 'navbar-nav align-items-lg-center',
+                                    'menu_class'     => 'navbar-nav',
                                 ]);
                                 ?>
                             </div>

@@ -6,6 +6,7 @@ require('dotenv').config()
 // The second file loaded will overwrite any duplicate keys from the first.
 const env = process.env.NODE_ENV || 'development'
 require('dotenv').config({ path: `.env.${env}`, override: true })
+const { PurgeCSS } = require('purgecss')
 
 const data = readFileSync('pages.json', 'utf8')
 const pages = (data) ? JSON.parse(data) : null
@@ -15,23 +16,20 @@ function parseUrl(url, page) {
   url.on('data', chunk => {
     html += chunk.toString().trim()
   }).on('end', async () => {
-    const target = { css: `critical/${page.name}.css` }
-    let css = page.css
-    const { generate } = await import('critical')
-    await generate({
-      base: process.env.CSS_PATH.slice(1),
-      html,
-      target,
-      width: process.env.SCREEN_MAX_WIDTH,
-      height: process.env.SCREEN_MAX_HEIGHT,
-      rebase: (asset) => `${process.env.THEME_URL}${asset.absolutePath}`,
-      css
-    })
-    console.log(`Done - ${page.name}.`)
+    try {
+      await new PurgeCSS().purge({
+        content: [{ raw: html, extension: 'html' }],
+        css: [`${process.env.CSS_PATH}${page.name}.css`],
+        output: process.env.CSS_PATH
+      })
+      console.log(`Done - ${page.name}.`)
+    } catch (e) {
+      console.error('Failed to purge page css.', e.message)
+    }
   })
 }
 
-pages.forEach(page => {
+pages.forEach(async (page) => {
   try {
     const url = new URL(`${process.env.SITE_URL}${page.url}`)
     if (url.protocol === 'https:') {
