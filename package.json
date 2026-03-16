@@ -1,0 +1,10 @@
+{
+  "scripts": {
+    "crit-dev": "NODE_ENV=development node critical.js",
+    "crit-prod": "NODE_ENV=production node critical.js"
+  },
+  "devDependencies": {
+    "critical": "^7.2.1",
+    "dotenv": "^17.3.1"
+  }
+}

@@ -1,0 +1,37 @@
+[
+  {
+    "url": "/",
+    "name": "home",
+    "css": []
+  },
+  {
+    "url": "/terms-of-service/",
+    "name": "page",
+    "css": []
+  },
+  {
+    "url": "/blog/",
+    "name": "blog",
+    "css": []
+  },
+  {
+    "url": "/my-category/my-post-name/",
+    "name": "post",
+    "css": []
+  },
+  {
+    "url": "/contacts/",
+    "name": "contacts",
+    "css": []
+  },
+  {
+    "url": "/shop/",
+    "name": "shop",
+    "css": []
+  },
+  {
+    "url": "/my-product-category/my-product-name/",
+    "name": "product",
+    "css": []
+  }
+]
