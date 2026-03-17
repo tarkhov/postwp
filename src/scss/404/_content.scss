@@ -1,0 +1,35 @@
+.error404 {
+  background-color: #f6fafd;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  font-family: var(--bs-font-monospace);
+}
+
+.error404-container {
+  margin-top: auto;
+  margin-bottom: auto;
+  text-align: center;
+}
+
+.error404-title {
+  font-size: 10rem;
+  color: var(--bs-primary);
+  line-height: 1;
+
+  @include media-breakpoint-up(sm) {
+    font-size: 12rem;
+  }
+}
+
+.error404-text {
+  line-height: 1.7;
+}
+
+.error404-text br {
+  display: none;
+
+  @include media-breakpoint-up(lg) {
+    display: block;
+  }
+}

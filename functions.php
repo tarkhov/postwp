@@ -96,6 +96,14 @@ function wp_enqueue_scripts_action() {
         wpcf7_enqueue_styles();
         wpcf7_enqueue_scripts();
         deferJs('contacts');
+
+        global $post;
+        if ($post) {
+            $point = get_field('point', $post->ID);
+            if (!empty($point)) {
+                wp_localize_script('contacts', 'point', $point);
+            }
+        }
     } elseif (is_page()) {
         deferJs('page');
     }
@@ -237,7 +245,7 @@ function manage_posts_custom_column_action($column, $post_id) {
 }
 add_action('manage_posts_custom_column' , 'manage_posts_custom_column_action', 10, 2);
 
-if (is_active_acf()) {
+if (is_active_acf() && isset($_ENV['GOOGLE_MAPS_KEY'])) {
     function acf_google_map_api_filter($api){
         $api['key'] = $_ENV['GOOGLE_MAPS_KEY'];
         return $api;

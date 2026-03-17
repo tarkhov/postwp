@@ -1,39 +1,43 @@
 document.addEventListener('DOMContentLoaded', async function () {
+  if (!process.env?.GOOGLE_MAPS_KEY) return false
+
   const { Loader } = await import('@googlemaps/js-api-loader')
   const loader = new Loader({
     apiKey: process.env.GOOGLE_MAPS_KEY,
-    version: 'weekly',
-    libraries: ['marker']
+    version: 'weekly'
+    // libraries: ['marker']
   })
-
   const [
-    { Map },
-    { Marker },
-    { InfoWindow }
+    { Map, InfoWindow },
+    { AdvancedMarkerElement }
   ] = await Promise.all([
     loader.importLibrary('maps'),
-    loader.importLibrary('marker'),
-    loader.importLibrary('streetView')
+    loader.importLibrary('marker')
   ])
-  let coords = null
-  if (typeof point !== 'undefined') {
-    coords = {
+
+  let id = ''
+  const options = {}
+  if (typeof mapPoint !== 'undefined') {
+    id = mapPoint.id
+    options = {
       center: {
-        lat: point.lat,
-        lng: point.lng
+        lat: parseFloat(mapPoint.lat),
+        lng: parseFloat(mapPoint.lng)
       },
-      zoom: point.zoom
+      zoom: parseInt(mapPoint.zoom)
     }
-  } else if (typeof position !== 'undefined') {
-    coords = {
+  } else if (typeof mapOptions !== 'undefined') {
+    id = mapOptions.id
+    options = {
       center: {
-        lat: position.lat,
-        lng: position.lng
+        lat: parseFloat(mapOptions.lat),
+        lng: parseFloat(mapOptions.lng)
       },
-      zoom: position.zoom
+      zoom: parseInt(mapOptions.zoom)
     }
   } else {
-    coords = {
+    id = process.env.GOOGLE_MAPS_ID
+    options = {
       center: {
         lat: parseFloat(process.env.GOOGLE_MAPS_LAT),
         lng: parseFloat(process.env.GOOGLE_MAPS_LNG)
@@ -41,60 +45,46 @@ document.addEventListener('DOMContentLoaded', async function () {
       zoom: parseInt(process.env.GOOGLE_MAPS_ZOOM)
     }
   }
-  const map = new Map(document.getElementById('map'), coords)
+  const map = new Map(document.getElementById(id), options)
 
-  if (typeof points !== 'undefined' && points.length) {
-    const markers = points.map(point => {
-      const marker = new Marker({
-        map,
-        position: {
-          lat: point.lat,
-          lng: point.lng
-        },
-        title: point.title
+  if (typeof mapPoint !== 'undefined') {
+    const marker = new AdvancedMarkerElement({
+      map,
+      position: mapPoint.position
+    })
+    const infoOptions = { maxWidth: 200 }
+    if (mapPoint?.content) infoOptions.content = mapPoint.content
+    const infoWindow = new InfoWindow(infoOptions)
+    marker.addListener("click", () => {
+      // Optional: close any other open info window
+      infoWindow.close(); 
+      // infoWindow.setContent(content)
+      infoWindow.open({
+        map: map,
+        anchor: marker, // Anchor the info window to the advanced marker
+        shouldFocus: false, // Optional focus management
       })
-      const infoWindow = new InfoWindow()
-      marker.addListener('click', () => {
-        infoWindow.close()
-        let content = point.thumbnail +
-        `<div style="margin: 10px 0;font-size: 18px;text-align: center;font-weight: 500;">${marker.getTitle()}</div>`          
-        if (point.price_in_baht) {
-          content += `<div style="font-size: 18px;font-weight: 400;text-align: center;margin-bottom: 10px;color: rgba(128, 174, 52, 1);">${point.price_in_baht}</div>`
-        }
-        if (point.price_per_month_in_baht) {
-          content += `<div style="font-size: 18px;font-weight: 400;text-align: center;margin-bottom: 10px;color: rgba(128, 174, 52, 1);">${point.price_per_month_in_baht}</div>`
-        }
-        content += `<a href="${point.permalink}" style="text-align: center;color: #000;font-size: 14px;font-weight: 500;display: block;">${point.more}</a>`
-        infoWindow.setContent(content)
-        infoWindow.open(marker.getMap(), marker)
+    })
+  } else if (typeof mapPoints !== 'undefined') {
+    const markers = mapPoints.map(point => {
+      const marker = new AdvancedMarkerElement({
+        map,
+        position: point.position
+      })
+      const infoOptions = { maxWidth: 200 }
+      if (point?.content) infoOptions.content = point.content
+      const infoWindow = new InfoWindow(infoOptions)
+      marker.addListener("click", () => {
+        // Optional: close any other open info window
+        infoWindow.close(); 
+        // infoWindow.setContent(content)
+        infoWindow.open({
+          map: map,
+          anchor: marker, // Anchor the info window to the advanced marker
+          shouldFocus: false, // Optional focus management
+        })
       })
       return marker
-    })
-  }
-
-  if (typeof point !== 'undefined') {
-    const marker = new Marker({
-      map,
-      position: {
-        lat: point.lat,
-        lng: point.lng
-      },
-      title: point.title
-    })
-    const infoWindow = new InfoWindow()
-    marker.addListener('click', () => {
-      infoWindow.close()
-      let content = point.thumbnail +
-      `<div style="margin: 10px 0;font-size: 18px;text-align: center;font-weight: 500;">${marker.getTitle()}</div>`          
-      if (point.price_in_baht && point.price_in_usd) {
-        content += `<div style="font-size: 18px;font-weight: 400;text-align: center;margin-bottom: 10px;color: rgba(128, 174, 52, 1);">${point.price_in_baht} (${point.price_in_usd})</div>`
-      }
-      if (point.price_per_month_in_baht && point.price_per_month_in_usd) {
-        content += `<div style="font-size: 18px;font-weight: 400;text-align: center;margin-bottom: 10px;color: rgba(128, 174, 52, 1);">${point.price_per_month_in_baht} (${point.price_per_month_in_usd})</div>`
-      }
-      content += `<a href="${point.permalink}" style="text-align: center;color: #000;font-size: 14px;font-weight: 500;display: block;">${point.more}</a>`
-      infoWindow.setContent(content)
-      infoWindow.open(marker.getMap(), marker)
     })
   }
 })
