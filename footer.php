@@ -15,7 +15,7 @@
                             <span class="navbar-toggler-icon"></span>
                         </button>
 
-                        <div class="collapse navbar-collapse" id="navbar-bottom-collapse">  
+                        <div class="collapse navbar-collapse" id="navbar-bottom-collapse">
                             <?php
                             wp_nav_menu([
                                 'theme_location' => 'bottom',

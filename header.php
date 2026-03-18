@@ -11,7 +11,7 @@
         <link rel="manifest" href="<?php echo $site_url; ?>/site.webmanifest">
         <?php wp_head(); ?>
     </head>
-    <body <?php body_class(); ?>>
+    <body <?php body_class(['d-flex', 'flex-column']); ?>>
         <?php if (!is_404()) : ?>
             <header id="header" role="banner">
                 <nav class="navbar navbar-expand-lg fixed-top" id="navbar-top" role="navigation" data-bs-theme="<?php if (is_front_page()) : ?>dark<?php else : ?>light<?php endif; ?>">
@@ -33,13 +33,11 @@
                                 <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="<?php _e('Close', 'postwp'); ?>"></button>
                             </div>
                             <div class="offcanvas-body">
-                                <?php
-                                wp_nav_menu([
+                                <?php wp_nav_menu([
                                     'theme_location' => 'top',
-                                    'container'      => false,
-                                    'menu_class'     => 'navbar-nav',
-                                ]);
-                                ?>
+                                    'container' => false,
+                                    'menu_class' => 'navbar-nav'
+                                ]); ?>
                             </div>
                         </div>
                     </div>
