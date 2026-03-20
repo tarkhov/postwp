@@ -18,7 +18,7 @@ document.addEventListener('DOMContentLoaded', async function () {
 
   try {
     const { default: Dropdown } = await import('bootstrap/js/dist/dropdown')
-    document.querySelectorAll('[data-bs-toggle="dropdown"]').forEach(dropdown => new Dropdown(dropdown))
+    document.querySelectorAll('[data-bs-toggle="dropdown"]').forEach(toggle => new Dropdown(toggle))
   } catch (error) {
     console.error(error)
   }
@@ -33,6 +33,20 @@ document.addEventListener('DOMContentLoaded', async function () {
   try {
     const { default: Modal } = await import('bootstrap/js/dist/modal')
     document.querySelectorAll('.modal').forEach(modal => new Modal(modal))
+  } catch (error) {
+    console.error(error)
+  }
+
+  try {
+    const { default: Tab } = await import('bootstrap/js/dist/tab')
+    document.querySelectorAll('[data-bs-toggle="tab"]')
+      .forEach(toggle => {
+        const tab = new Tab(toggle)
+        toggle.addEventListener('click', event => {
+          event.preventDefault()
+          tab.show()
+        })
+      })
   } catch (error) {
     console.error(error)
   }

@@ -52,12 +52,24 @@ export default {
           options: {
             targets: "defaults",
             presets: [
-              ['@babel/preset-env']
+              ['@babel/preset-env', { "modules": false }]
               // ['@babel/preset-env', { targets: "defaults" }]
             ]
           }
         }
       }
     ]
+  },
+  optimization: {
+    splitChunks: {
+      chunks: 'all',
+      cacheGroups: {
+        vendor: {
+          test: /[\\/]node_modules[\\/]/,
+          name: 'vendors',
+          chunks: 'all'
+        }
+      }
+    }
   }
 }

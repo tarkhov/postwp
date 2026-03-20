@@ -212,6 +212,72 @@ function navigation_markup_template_filter($template, $class) {
 }
 add_filter('navigation_markup_template', 'navigation_markup_template_filter', 10, 2);
 
+// function wp_setup_nav_menu_item_filter($menu_item) {
+//     $menu_item->description = apply_filters('nav_menu_description', $menu_item->post_content);
+//     return $menu_item;
+// }
+// add_filter('wp_setup_nav_menu_item', 'wp_setup_nav_menu_item_filter');
+
+// function nav_menu_item_title_filter($title, $item, $args, $depth) {
+//     if (trim($item->description)) {
+//         $title = $item->description;
+//     }
+//     return $title;
+// }
+// add_filter('nav_menu_item_title', 'nav_menu_item_title_filter', 10, 4);
+
+// function nav_menu_item_title_filter($title, $item, $args, $depth) {
+//     if ($args->theme_location) {
+//         return $title;
+//     }
+//     $title = '<span class="list-text">' . $title . '</span>';
+
+//     $icon_url = get_post_meta($item->ID, '_menu_item_icon_url', true);
+//     if (!$icon_url) {
+//         return $title;
+//     }
+
+//     $svg_content = convert_url_to_svg($icon_url);
+//     if (!$svg_content) {
+//         return $title;
+//     }
+//     $title = $svg_content . $title;
+
+//     return $title;
+// }
+// add_filter('nav_menu_item_title', 'nav_menu_item_title_filter', 10, 4);
+
+function widgets_init_action() {
+    register_sidebar([
+        'id'            => 'left',
+        'name'          => __('Left', 'postwp'),
+        'before_title'  => '<div>',
+        'after_title'   => '</div>',
+        'before_widget' => '<div>',
+        'after_widget'  => '</div>',
+    ]);
+}
+add_action('widgets_init', 'widgets_init_action');
+
+function dynamic_sidebar_params_filter($params) {
+    if ($params[0]['widget_name'] == _x('Search', 'Search widget')) {
+        $params[0]['before_widget'] = '<div class="sidebar-widget">';
+        $params[0]['after_widget'] = '</div>';
+    }
+    return $params;
+}
+add_filter('dynamic_sidebar_params', 'dynamic_sidebar_params_filter');
+
+// function widget_nav_menu_args_filter($nav_menu_args, $nav_menu, $args, $instance) {
+//     if ($args['id'] === 'footer_sidebar') {
+//         $nav_menu_args['theme_location'] = 'footer_menu';
+//         $nav_menu_args['container_class'] = 'container-class';
+//         $nav_menu_args['menu_class'] = 'menu-class';
+//     }
+//     return $nav_menu_args;
+// }
+// add_filter('widget_nav_menu_args', 'widget_nav_menu_args_filter', 10, 4);
+
 function get_the_archive_title_prefix_filter($prefix) {
     return (is_category() || is_tag()) ? '' : $prefix;
 }
